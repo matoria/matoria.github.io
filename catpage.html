@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="css/catpage.css">
+
+<title>Maria Victoria</title>
+
+
+<script type="text/javascript">
+// <![CDATA[
+var colour="#000000";
+var sparkles=120;
+
+/****************************
+*  Tinkerbell Magic Sparkle *
+* (c) 2005 mf2fm web-design *
+*  http://www.mf2fm.com/rv  *
+* DON'T EDIT BELOW THIS BOX *
+****************************/
+var x=ox=400;
+var y=oy=300;
+var swide=800;
+var shigh=600;
+var sleft=sdown=0;
+var tiny=new Array();
+var star=new Array();
+var starv=new Array();
+var starx=new Array();
+var stary=new Array();
+var tinyx=new Array();
+var tinyy=new Array();
+var tinyv=new Array();
+
+window.onload=function() { if (document.getElementById) {
+  var i, rats, rlef, rdow;
+  for (var i=0; i<sparkles; i++) {
+    var rats=createDiv(3, 3);
+    rats.style.visibility="hidden";
+    document.body.appendChild(tiny[i]=rats);
+    starv[i]=0;
+    tinyv[i]=0;
+    var rats=createDiv(5, 5);
+    rats.style.backgroundColor="transparent";
+    rats.style.visibility="hidden";
+    var rlef=createDiv(1, 5);
+    var rdow=createDiv(5, 1);
+    rats.appendChild(rlef);
+    rats.appendChild(rdow);
+    rlef.style.top="2px";
+    rlef.style.left="0px";
+    rdow.style.top="0px";
+    rdow.style.left="2px";
+    document.body.appendChild(star[i]=rats);
+  }
+  set_width();
+  sparkle();
+}}
+
+function sparkle() {
+  var c;
+  if (x!=ox || y!=oy) {
+    ox=x;
+    oy=y;
+    for (c=0; c<sparkles; c++) if (!starv[c]) {
+      star[c].style.left=(starx[c]=x)+"px";
+      star[c].style.top=(stary[c]=y)+"px";
+      star[c].style.clip="rect(0px, 5px, 5px, 0px)";
+      star[c].style.visibility="visible";
+      starv[c]=50;
+      break;
+    }
+  }
+  for (c=0; c<sparkles; c++) {
+    if (starv[c]) update_star(c);
+    if (tinyv[c]) update_tiny(c);
+  }
+  setTimeout("sparkle()", 40);
+}
+
+function update_star(i) {
+  if (--starv[i]==25) star[i].style.clip="rect(1px, 4px, 4px, 1px)";
+  if (starv[i]) {
+    stary[i]+=1+Math.random()*3;
+    if (stary[i]<shigh+sdown) {
+      star[i].style.top=stary[i]+"px";
+      starx[i]+=(i%5-2)/5;
+      star[i].style.left=starx[i]+"px";
+    }
+    else {
+      star[i].style.visibility="hidden";
+      starv[i]=0;
+      return;
+    }
+  }
+  else {
+    tinyv[i]=50;
+    tiny[i].style.top=(tinyy[i]=stary[i])+"px";
+    tiny[i].style.left=(tinyx[i]=starx[i])+"px";
+    tiny[i].style.width="2px";
+    tiny[i].style.height="2px";
+    star[i].style.visibility="hidden";
+    tiny[i].style.visibility="visible"
+  }
+}
+
+function update_tiny(i) {
+  if (--tinyv[i]==25) {
+    tiny[i].style.width="1px";
+    tiny[i].style.height="1px";
+  }
+  if (tinyv[i]) {
+    tinyy[i]+=1+Math.random()*3;
+    if (tinyy[i]<shigh+sdown) {
+      tiny[i].style.top=tinyy[i]+"px";
+      tinyx[i]+=(i%5-2)/5;
+      tiny[i].style.left=tinyx[i]+"px";
+    }
+    else {
+      tiny[i].style.visibility="hidden";
+      tinyv[i]=0;
+      return;
+    }
+  }
+  else tiny[i].style.visibility="hidden";
+}
+
+document.onmousemove=mouse;
+function mouse(e) {
+  set_scroll();
+  y=(e)?e.pageY:event.y+sdown;
+  x=(e)?e.pageX:event.x+sleft;
+}
+
+function set_scroll() {
+  if (typeof(self.pageYOffset)=="number") {
+    sdown=self.pageYOffset;
+    sleft=self.pageXOffset;
+  }
+  else if (document.body.scrollTop || document.body.scrollLeft) {
+    sdown=document.body.scrollTop;
+    sleft=document.body.scrollLeft;
+  }
+  else if (document.documentElement && (document.documentElement.scrollTop || document.documentElement.scrollLeft)) {
+    sleft=document.documentElement.scrollLeft;
+	sdown=document.documentElement.scrollTop;
+  }
+  else {
+    sdown=0;
+    sleft=0;
+  }
+}
+
+window.onresize=set_width;
+function set_width() {
+  if (typeof(self.innerWidth)=="number") {
+    swide=self.innerWidth;
+    shigh=self.innerHeight;
+  }
+  else if (document.documentElement && document.documentElement.clientWidth) {
+    swide=document.documentElement.clientWidth;
+    shigh=document.documentElement.clientHeight;
+  }
+  else if (document.body.clientWidth) {
+    swide=document.body.clientWidth;
+    shigh=document.body.clientHeight;
+  }
+}
+
+function createDiv(height, width) {
+  var div=document.createElement("div");
+  div.style.position="absolute";
+  div.style.height=height+"px";
+  div.style.width=width+"px";
+  div.style.overflow="hidden";
+  div.style.backgroundColor=colour;
+  return (div);
+}
+// ]]>
+</script>
+
+
+
+
+
+</head>
+<body>
+
+<nav class="navbar navbar-light bg-faded">
+  <div class="container">
+    <a class="navbar-brand">Matoria</a>
+    <ul class="nav navbar-nav pull-right">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Facebook</a>
+        <a class="nav-link" href="#">Twitter</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+<h1>Maria Victoria</h1>
+
+<div class="container">
+	<div class="row"> 
+		<div class="col-md-4 meow">
+
+			<div class="card text-center">
+				<div class="card-block">
+					<img class="img-circle" src="https://scontent-lhr3-1.xx.fbcdn.net/v/t1.0-9/14291811_781913915244257_5145105940435026227_n.jpg?oh=7bea532a5c65641b69c408dd85ff8654&oe=58CFB745" height=200 width=200>
+					<h4 class="card-title"><b>Maria Victoria</b></h4> 
+					<p class="card-text"> Hello! Welcome to my website :) </p>
+				</div>
+				<div class="card-footer">
+	              <a>
+	                <i class="fa fa-linkedin-square"></i>
+	              </a>
+	              <a>
+	                <i class="fa fa-twitter"></i>
+	              </a>
+	              <a>
+	                <i class="fa fa-facebook-square"></i>
+	              </a>
+	              <a>
+	                <i class="fa fa-spotify"></i>
+	              </a>
+	            </div>
+  			</div>
+
+  			<div class="card text-center">
+				<div class="card-block">
+					<h4 class="card-title"><b>About me</b></h4> 
+					<p> 19 </p>
+					<p> Queen Mary University of London </p> 
+					<p> Venezuela ☯ Australia ☯ United States ☯ London </p>
+					<p> Cancer research </p>
+				</div>
+  			</div>
+
+  			<div class="card text-center">
+				<div class="card-block">
+					<h4 class="card-title"><b>Contact</b></h4> 
+					<p class="card-text"> Text me!</p>
+				</div>
+  			</div>
+
+  			<div class="card text-center">
+				<div class="card-block">
+					<h4 class="card-title"><b>Languages</b></h4> 
+					<p> Spanish </p>
+					<p> French </p>
+					<p> English </p>
+					<p> Swedish </p>
+				</div>
+  			</div>
+        </div>
+
+		<div class="col-md-8 meow">
+			<div class="card text-left">
+				<div class="card-block">
+					<h4 class="card-title"><b>About me</b></h4> 
+					<p> I like to sing and play guitar. I love languages and travelling and molecular biology and running and lifting heavy weights. </p>
+				</div>
+  			</div>
+		</div>
+
+	</div>	
+</div>
+
+
+
+
+
+
+</body>
+</html>
